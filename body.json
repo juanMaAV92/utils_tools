@@ -1,0 +1,44 @@
+{
+    "pdf" : [
+        {
+            "file_name": "file1.pdf",
+            "operations": [
+                {
+                    "operation": "rotate",
+                    "pages": [1, 2, 3],
+                    "angle": 90
+                },
+                {
+                    "operation": "rotate",
+                    "pages": [7, 8],
+                    "angle": 180
+
+                },
+                {
+                    "operation": "delete",
+                    "pages": [4]
+                }
+            ]
+        },
+        {
+            "file_name": "file2.pdf",
+            "operations": [
+                {
+                    "operation": "rotate",
+                    "pages": [1, 2, 3],
+                    "angle": 90
+                },
+                {
+                    "operation": "rotate",
+                    "pages": [7, 8],
+                    "angle": 180
+
+                },
+                {
+                    "operation": "delete",
+                    "pages": [4]
+                }
+            ]
+        }
+    ]
+}
