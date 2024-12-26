@@ -4,6 +4,14 @@ from fastapi.responses import JSONResponse
 from app.core import settings
 from app.constants import routes
 from app.api import api_router_v1
+from app.services import redis_service
+
+async def lifespan(app: FastAPI):
+    # Startup event
+    await redis_service.redis.initialize()
+    yield
+    # Shutdown event
+    await redis_service.redis.close()
 
 app = FastAPI(
     title= settings.APP_NAME,
@@ -11,6 +19,7 @@ app = FastAPI(
 
     docs_url= settings.APP_DOC_URL,
     openapi_url= f"/{settings.APP_VERSION}/openapi.json",
+    lifespan=lifespan
 )
 
 @app.get(routes.HEALTH_CHECK, tags=["health"])

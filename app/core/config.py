@@ -16,5 +16,6 @@ class Settings:
 
     SERVER_HOST: str = os.getenv("SERVER_HOST", "127.0.0.1")
     SERVER_PORT: int = os.getenv("SERVER_PORT", 8000)
+    REDIS_HOST: str = os.getenv("REDIS_HOST", "redis://localhost:6379")
 
 settings = Settings()
