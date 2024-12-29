@@ -1,2 +1,2 @@
-from .files_service import file_service, FileService
-from .redis_service import redis_service, RedisService
+from .files_service import FileService, file_service
+from .redis_service import RedisService, redis_service

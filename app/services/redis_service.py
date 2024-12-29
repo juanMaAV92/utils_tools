@@ -2,6 +2,7 @@ import redis.asyncio as redis
 
 from app.core import settings
 
+
 class RedisService:
     _instance = None
 
@@ -11,7 +12,7 @@ class RedisService:
         return cls._instance
 
     def __init__(self):
-        if not hasattr(self, 'initialized'):
+        if not hasattr(self, "initialized"):
             self.redis = redis.from_url(settings.REDIS_HOST)
             self.initialized = True
 
@@ -20,8 +21,9 @@ class RedisService:
 
     async def get(self, key: str):
         return await self.redis.get(key)
-    
+
     async def delete(self, key: str):
         await self.redis.delete(key)
-    
+
+
 redis_service = RedisService()

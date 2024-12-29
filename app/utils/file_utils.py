@@ -1,5 +1,7 @@
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
+
 from fastapi import UploadFile
+
 
 def verify_file_types(files: List[UploadFile]) -> Tuple[Optional[str], Optional[str]]:
     if not files:
