@@ -1,15 +1,14 @@
-# utils_tools
-
 # Utils Tools
 
 ## Descripción
 
-Utils Tools es un proyecto que proporciona una colección de herramientas y utilidades para facilitar diversas tareas. Este proyecto está construido con FastAPI y utiliza Poetry para la gestión de dependencias.
+Utils Tools es una solución integral diseñada para proporcionar una colección de herramientas y utilidades avanzadas para la manipulación de archivos. Desarrollado con FastAPI y gestionado mediante Poetry, este proyecto tiene como objetivo ofrecer un servicio seguro y eficiente para la manipulación de archivos, eliminando la necesidad de subir documentos sensibles a plataformas externas y mitigando así los riesgos de seguridad asociados.
 
 ## Requisitos
 
-- Python 3.8+
+- Python 3.10+
 - Poetry
+
 
 ## Instalación
 
@@ -36,9 +35,43 @@ Utils Tools es un proyecto que proporciona una colección de herramientas y util
 
 ## Uso
 
-Para iniciar la aplicación, ejecuta el siguiente comando:
+1. Inicia el servidor:
+
+    ```sh
+    export PYTHONPATH=$PWD
+    poetry run python app/main.py
+    ```
+
+2. Accede a la documentación interactiva de la API en [http://localhost:8000/docs](http://localhost:8000/docs).
+
+## Pruebas
+
+Para ejecutar las pruebas, usa el siguiente comando:
 
 ```sh
-export PYTHONPATH=$PWD
-poetry run python app/main.py
+poetry run pytest
 ```
+
+Para formatar el código, usa el siguiente comando:
+
+```sh
+poetry run black .
+```
+
+Para ordenar las importaciones, usa el siguiente comando:
+
+```sh
+poetry run isort .
+```
+
+Para ejecutar flake8, usa el siguiente comando:
+
+```sh
+poetry run flake8
+```
+
+## Licencia
+
+Las contribuciones son bienvenidas. Por favor, abre un issue o un pull request para discutir cualquier cambio que te gustaría hacer.
+
+Distribuido bajo la licencia MIT. Consulte [LICENSE](LICENSE) para obtener más información.
