@@ -26,7 +26,7 @@ class FileService:
             os.makedirs(TEMP_DIR)
 
     async def get_files(self, token: UUID) -> List[str]:
-        file_paths_json = await redis_service.get(str(token))
+        file_paths_json = await redis_service.get(token)
         if not file_paths_json:
             raise HTTPException(status_code=404, detail="Files not found")
         file_names = [
@@ -50,17 +50,17 @@ class FileService:
 
         token = uuid.uuid4()
         file_paths_json = json.dumps(file_paths)
-        await redis_service.set(str(token), file_paths_json)
+        await redis_service.set(token, file_paths_json)
 
         return SaveFilesResult(token=token, file_type=file_type)
 
-    async def delete_files(self, key: str) -> None:
-        file_paths_json = await redis_service.get(key)
+    async def delete_files(self, token: UUID) -> None:
+        file_paths_json = await redis_service.get(token)
         if file_paths_json:
             file_paths = json.loads(file_paths_json)
             for file_path in file_paths:
                 os.remove(file_path)
-            await redis_service.delete(key)
+            await redis_service.delete(token)
         else:
             raise Exception("Files not found")
 

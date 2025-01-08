@@ -1,3 +1,4 @@
+from uuid import UUID
 import redis.asyncio as redis
 
 from app.core import settings
@@ -19,11 +20,11 @@ class RedisService:
     async def set(self, key: str, value: str, expire: int = 1800):
         await self.redis.setex(key, expire, value)
 
-    async def get(self, key: str):
-        return await self.redis.get(key)
+    async def get(self, key: UUID):
+        return await self.redis.get(str(key))
 
-    async def delete(self, key: str):
-        await self.redis.delete(key)
+    async def delete(self, key: UUID):
+        await self.redis.delete(str(key))
 
 
 redis_service = RedisService()

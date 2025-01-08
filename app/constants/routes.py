@@ -4,8 +4,6 @@ class Routes:
     V1 = "/v1"
 
     FILES = "/files"
-    UPLOAD_FILES = f"{FILES}/upload"
-    DOWNLOAD_FILES = f"{FILES}/download"
 
 
 routes = Routes()
