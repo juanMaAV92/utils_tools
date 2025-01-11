@@ -4,6 +4,7 @@ class Routes:
     V1 = "/v1"
 
     FILES = "/files"
+    PROCESS_FILES = f"{FILES}/process"
 
 
 routes = Routes()

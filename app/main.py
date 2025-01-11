@@ -9,10 +9,13 @@ from app.services import redis_service
 
 
 async def lifespan(app: FastAPI):
-    # Startup event
+
+    print("Inicializando servicios...")
     await redis_service.redis.initialize()
-    yield
-    # Shutdown event
+
+    yield  
+
+    print("Cerrando servicios...")
     await redis_service.redis.close()
 
 

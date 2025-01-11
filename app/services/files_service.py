@@ -8,7 +8,10 @@ from uuid import UUID
 import aiofiles
 from fastapi import HTTPException, UploadFile
 
-from app.services.redis_service import redis_service
+from app.domain.processor import PDFProcessor
+from app.interfaces import ProcessedFile
+from app.schemas import ProcessRequest
+from app.services import redis_service
 from app.utils import verify_file_types
 
 TEMP_DIR = "/tmp"
@@ -20,10 +23,16 @@ class SaveFilesResult:
     file_type: str
 
 
+
+
 class FileService:
     def __init__(self):
         if not os.path.exists(TEMP_DIR):
             os.makedirs(TEMP_DIR)
+
+        self.processors = {
+            "pdf": PDFProcessor(),
+        }
 
     async def get_files(self, token: UUID) -> List[str]:
         file_paths_json = await redis_service.get(token)
@@ -63,6 +72,12 @@ class FileService:
             await redis_service.delete(token)
         else:
             raise Exception("Files not found")
+        
+    async def process_files(self, request: ProcessRequest) -> ProcessedFile:
+        processor = self.processors.get(request.files_type)
+        if not processor:
+            raise HTTPException(status_code=400, detail="File type not supported")
+        return await processor.process(request)
 
 
 file_service = FileService()

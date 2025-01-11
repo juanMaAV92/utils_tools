@@ -1,11 +1,11 @@
 from typing import List
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, File, Query, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
+from fastapi.responses import FileResponse, JSONResponse
 
 from app.constants.routes import Routes
-from app.schemas import DownloadFilesResponse, UploadFilesResponse
+from app.schemas import DownloadFilesResponse, UploadFilesResponse, ProcessRequest
 from app.services import FileService, file_service
 
 router = APIRouter()
@@ -59,3 +59,21 @@ async def delete_files(
         status_code=204,
         media_type="application/json",
    )
+
+
+@router.post(Routes.PROCESS_FILES)
+async def process_files(
+    body: ProcessRequest,
+):
+    try:
+        response = await  file_service.process_files(body)
+        return FileResponse(
+            path = response.path,
+            filename= response.filename,
+            media_type= response.media_type,
+        )
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail="An error occurred while processing the files.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Internal server error.")
+    
