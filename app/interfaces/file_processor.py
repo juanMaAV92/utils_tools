@@ -12,5 +12,5 @@ class ProcessedFile:
     
 class FileProcessor(ABC):
     @abstractmethod
-    async def process(self, request: ProcessRequest) -> str:
+    async def process(self, request: ProcessRequest) -> ProcessedFile:
         pass

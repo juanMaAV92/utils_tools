@@ -4,9 +4,11 @@ from uuid import UUID
 from fastapi import APIRouter, Depends, File, HTTPException, Query, UploadFile
 from fastapi.responses import FileResponse, JSONResponse
 
+from app import utils
 from app.constants.routes import Routes
 from app.schemas import DownloadFilesResponse, UploadFilesResponse, ProcessRequest
 from app.services import FileService, file_service
+from app.utils.file_utils import is_valid_file_size
 
 router = APIRouter()
 
@@ -17,9 +19,15 @@ router = APIRouter()
 )
 async def upload_file(
     files: List[UploadFile] = File(...),
-    file_service: FileService = Depends(lambda: file_service),
+    service: FileService = Depends(lambda: file_service),
 ):
-    result = await file_service.save_files(files)
+
+    if utils.is_valid_file_size(files) is False:
+        raise HTTPException(
+            status_code=400, detail="The file size exceeds the allowed limit"
+        )
+
+    result = await service.save_files(files)
     return JSONResponse(
         content=UploadFilesResponse(
             status="success", token=result.token, type_files=result.file_type

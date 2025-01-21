@@ -14,7 +14,6 @@ from app.schemas import ProcessRequest
 from app.services import redis_service
 from app.utils import verify_file_types
 
-TEMP_DIR = "/tmp"
 
 
 @dataclass
@@ -23,12 +22,12 @@ class SaveFilesResult:
     file_type: str
 
 
-
-
 class FileService:
     def __init__(self):
-        if not os.path.exists(TEMP_DIR):
-            os.makedirs(TEMP_DIR)
+
+        self.temp_dir = os.path.join(os.path.dirname(__file__), 'files')
+        if not os.path.exists(self.temp_dir):
+            os.makedirs(self.temp_dir)
 
         self.processors = {
             "pdf": PDFProcessor(),
@@ -51,7 +50,7 @@ class FileService:
 
         file_paths = []
         for file in files:
-            file_path = f"{TEMP_DIR}/{file.filename}"
+            file_path = f"{self.temp_dir}/{file.filename}"
             async with aiofiles.open(file_path, "wb") as buffer:
                 data = await file.read()
                 await buffer.write(data)

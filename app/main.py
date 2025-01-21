@@ -1,3 +1,6 @@
+import logging
+from contextlib import asynccontextmanager
+
 import uvicorn
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
@@ -7,17 +10,18 @@ from app.constants import routes
 from app.core import settings
 from app.services import redis_service
 
+logger = logging.getLogger('uvicorn.error')
 
+@asynccontextmanager
 async def lifespan(app: FastAPI):
-
-    print("Inicializando servicios...")
     await redis_service.redis.initialize()
+    logger.info("All services are up...")
 
-    yield  
-
-    print("Cerrando servicios...")
-    await redis_service.redis.close()
-
+    try:
+        yield
+    finally:
+        await redis_service.redis.close()
+        logger.info("All services are down...")
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -27,14 +31,11 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-
 @app.get(routes.HEALTH_CHECK, tags=["health"])
 async def health_check():
     return JSONResponse(content={"status": "ok"})
 
-
 app.include_router(api_router_v1, prefix=routes.V1)
-
 
 def run():
     uvicorn.run(
